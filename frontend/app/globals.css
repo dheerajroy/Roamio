@@ -20,7 +20,7 @@ button {
     @apply !bg-black text-white font-semibold cursor-pointer;
 }
 
-button:disabled {
+button[type="disabled"]:disabled {
     @apply bg-neutral-700;
 }
 

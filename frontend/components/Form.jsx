@@ -1,5 +1,3 @@
-"use client"
-
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { MdGpsFixed, MdGroups } from 'react-icons/md'
@@ -15,18 +13,33 @@ export default function Form({ fetchData }) {
     const [amenity, setAmenity] = useState('')
     const [radius, setRadius] = useState('')
 
+    useEffect(() => {
+        if (!searchParams.get('location') && !searchParams.get('amenity'))
+            return
+
+        setLocation(searchParams.get('location'))
+        setAmenity(searchParams.get('amenity'))
+        setRadius(searchParams.get('radius') || '')
+        const query = { location: location, amenity: amenity }
+        if (radius)
+            query.radius = radius
+        fetchData(query)
+    }, [searchParams])
+
     function onSubmit(e) {
         e.preventDefault()
         const data = new FormData(e.target)
         const locationValue = data.get('location')
         const amenityValue = data.get('amenity')
-        const radiusValue = data.get('radius')
+        const radiusValue = data.get('radius') || ''
 
+        
         setLocation(locationValue)
         setAmenity(amenityValue)
         setRadius(radiusValue)
-
+        
         router.push(`?location=${locationValue}&amenity=${amenityValue}${radiusValue ? `&radius=${radiusValue}` : ''}`)
+
         setIsButtonDisabled(true)
         setTimeout(() => {
             setIsButtonDisabled(false)
@@ -48,15 +61,6 @@ export default function Form({ fetchData }) {
             alert('Geolocation is not supported in this browser.')
         }
     }
-
-    useEffect(() => {
-        if (!searchParams.get('location') && !searchParams.get('amenity'))
-            return
-        setLocation(searchParams.get('location'))
-        setAmenity(searchParams.get('amenity'))
-        setRadius(searchParams.get('radius'))
-        fetchData({location: location, amenity: amenity, radius: radius})
-    }, [searchParams])
 
     return (
         <form onSubmit={onSubmit} className="fixed z-10 flex gap-2 m-3 flex-wrap [&>*]:w-full md:[&>*]:w-fit">

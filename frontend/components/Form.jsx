@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { MdGpsFixed, MdGroups } from 'react-icons/md'
@@ -8,15 +10,24 @@ export default function Form({ fetchData }) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+    const [isGPSClicked, setIsGPSClicked] = useState(false)
+    const [location, setLocation] = useState('')
+    const [amenity, setAmenity] = useState('')
+    const [radius, setRadius] = useState('')
 
     function onSubmit(e) {
         e.preventDefault()
         const data = new FormData(e.target)
-        const query = { location: data.get('location'), amenity: data.get('amenity') }
-        if (data.get('radius'))
-            query.radius = data.get('radius')
-        router.push(`?location=${query.location}&amenity=${query.amenity}${query.radius ? `&radius=${query.radius}` : ''}`)
-        setIsButtonDisabled(true);
+        const locationValue = data.get('location')
+        const amenityValue = data.get('amenity')
+        const radiusValue = data.get('radius')
+
+        setLocation(locationValue)
+        setAmenity(amenityValue)
+        setRadius(radiusValue)
+
+        router.push(`?location=${locationValue}&amenity=${amenityValue}${radiusValue ? `&radius=${radiusValue}` : ''}`)
+        setIsButtonDisabled(true)
         setTimeout(() => {
             setIsButtonDisabled(false)
         }, 5000)
@@ -24,9 +35,15 @@ export default function Form({ fetchData }) {
 
     function getLocation() {
         if ('geolocation' in navigator) {
+            setIsGPSClicked(true)
             navigator.geolocation.getCurrentPosition(function (position) {
-                document.getElementsByName('location')[0].value = `${position.coords.latitude}, ${position.coords.longitude}`
+                const latitude = position.coords.latitude
+                const longitude = position.coords.longitude
+                const locationValue = `${latitude}, ${longitude}`
+                setLocation(locationValue)
             })
+        } else if (isGPSClicked) {
+            setIsGPSClicked(false)
         } else {
             alert('Geolocation is not supported in this browser.')
         }
@@ -35,20 +52,19 @@ export default function Form({ fetchData }) {
     useEffect(() => {
         if (!searchParams.get('location') && !searchParams.get('amenity'))
             return
-        console.log('hello')
-        const query = { location: searchParams.get('location'), amenity: searchParams.get('amenity') }
-        if (searchParams.get('radius'))
-            query.radius = searchParams.get('radius')
-        fetchData(query)
+        setLocation(searchParams.get('location'))
+        setAmenity(searchParams.get('amenity'))
+        setRadius(searchParams.get('radius'))
+        fetchData({location: location, amenity: amenity, radius: radius})
     }, [searchParams])
 
     return (
         <form onSubmit={onSubmit} className="fixed z-10 flex gap-2 m-3 flex-wrap [&>*]:w-full md:[&>*]:w-fit">
             <div className='flex gap-2'>
-                <input className="w-full" type="text" name="location" placeholder="Area, city, country" required />
+                <input defaultValue={location} className="w-full" type="text" name="location" placeholder="Area, city, country" required />
                 <button className='square-btn' onClick={getLocation}><MdGpsFixed /></button>
             </div>
-            <select name="amenity" required>
+            <select defaultValue={amenity} name="amenity" required>
                 <option value="restaurant">Restaurant</option>
                 <option value="place_of_worship">Place  Of Worship</option>
                 <option value="cafe">Cafe</option>
@@ -67,7 +83,7 @@ export default function Form({ fetchData }) {
                 <option value="movie_theater">Movie Theater</option>
                 <option value="shopping_mall">Shopping Mall</option>
             </select>
-            <input type="number" name="radius" placeholder="Radius in meters" />
+            <input defaultValue={radius} type="number" name="radius" placeholder="Radius in meters" />
             <div className="flex gap-2">
                 <button className="w-full flex gap-2 justify-center items-center" type="submit" disabled={isButtonDisabled}><FaSearchLocation />Explore</button>
                 <button className="square-btn" onClick={() => window.open('https://www.openstreetmap.org/edit', '_blank')}><AiFillEdit /></button>

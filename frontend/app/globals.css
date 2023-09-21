@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    @apply outline-none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+input, button, select {
+    @apply p-2;
+}
+
+select {
+    @apply bg-white;
+}
+
+button {
+    @apply !bg-black text-white font-semibold cursor-pointer;
+}
+
+button:disabled {
+    @apply bg-neutral-700;
+}
+
+.square-btn {
+    @apply w-10 h-10 grid place-items-center text-xl;
+}

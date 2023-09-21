@@ -1,0 +1,66 @@
+# Common entries for FastAPI and Next.js
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+
+# Ignore environment variables file (if used)
+.env
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore built Next.js files
+.next/
+
+# Ignore build output directories for FastAPI
+__pycache__/
+dist/
+build/
+cache/
+*.egg-info/
+
+# Ignore virtual environment directories (if used)
+venv/
+env/
+
+# Ignore logs and temporary files
+*.log
+*.swp
+*~
+
+# Ignore editor-specific files
+.vscode/
+.idea/
+.env
+
+# Ignore npm debugging log
+npm-debug.log*
+
+# Ignore Yarn debugging log
+yarn-debug.log*
+
+# Ignore local SQLite database files (if used)
+*.sqlite3
+
+# Ignore .DS_Store files on macOS
+.DS_Store
+
+# Ignore compiled Python files
+*.pyc
+
+# Ignore user-specific VS Code settings
+.vscode/settings.json
+
+# Ignore user-specific Next.js config
+next.config.js
+
+# Ignore user-specific FastAPI config
+fastapi-config.yaml
+
+# Ignore user-specific Python environment files
+.python-version
+
+# Ignore compiled Python bytecode
+__pycache__/
+*.pyc

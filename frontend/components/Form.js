@@ -11,22 +11,18 @@ export default function Form({ setShowMap, gotLocation, setGotLocation, center, 
     const [amenity, setAmenity] = useState(null)
     const [radius, setRadius] = useState(null)
     const [submitted, setSubmitted] = useState(false)
-
+    
     useEffect(() => {
         setShowMap(false)
-        const locationValue = searchParams.get("location")
-        const amenityValue = searchParams.get("amenity")
-        const radiusValue = searchParams.get("radius")
-
-        setLocation(locationValue ? searchParams.get("location") : gotLocation ? center : "")
-        setAmenity(amenityValue || null)
+        setLocation(searchParams.get("location") || gotLocation ? center : "")
+        setAmenity(searchParams.get("amenity") || null)
         setRadius(searchParams.get("radius") || null)
 
-        const query = { location: locationValue, amenity: amenityValue }
-        if (radiusValue)
-            query.radius = radiusValue
+        const query = { location: location, amenity: amenity }
+        if (radius)
+            query.radius = radius
 
-        if (locationValue && amenityValue) {
+        if (location && amenity) {
             setSubmitted(false)
             fetchData(query)
         }

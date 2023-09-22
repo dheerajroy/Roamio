@@ -17,23 +17,22 @@ export default function Home() {
     const Map = dynamic(() => import("../components/Map"), { ssr: false })
 
     function fetchData(query) {
+        setShowMap(false)
         axios.get('https://roamio-api.onrender.com/nearby', {
             params: query,
         })
             .then((res) => {
-                setShowMap(false)
                 setCenter([res.data.latitude, res.data.longitude])
                 setData(res.data.data)
                 setZoom(15)
-                setShowMap(true)
             })
             .catch((error) => {
                 console.error('Error:', error)
             })
+            setShowMap(true)
     }
 
     useEffect(() => {
-        navigator.permissions.query({ name: 'geolocation' }).then(console.log)
         if (navigator.geolocation && !gotLocation) {
             console.log('running')
             navigator.geolocation.getCurrentPosition(pos => {

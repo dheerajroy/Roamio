@@ -17,7 +17,6 @@ export default function Home() {
     const Map = dynamic(() => import("../components/Map"), { ssr: false })
 
     function fetchData(query) {
-        setShowMap(false)
         axios.get('https://roamio-api.onrender.com/nearby', {
             params: query,
         })
@@ -29,12 +28,10 @@ export default function Home() {
             .catch((error) => {
                 console.error('Error:', error)
             })
-            setShowMap(true)
     }
 
     useEffect(() => {
         if (navigator.geolocation && !gotLocation) {
-            console.log('running')
             navigator.geolocation.getCurrentPosition(pos => {
                 setCenter([pos.coords.latitude, pos.coords.longitude])
                 setGotLocation(true)
@@ -52,8 +49,8 @@ export default function Home() {
 
     return (
         <div>
-            <Form gotLocation={gotLocation} setGotLocation={setGotLocation} center={center} fetchData={fetchData} />
-            {showMap ? (<Map center={center} zoom={zoom} showMarker={showMarker} data={data} />) : <Loading />}
+            <Form setShowMap={setShowMap} gotLocation={gotLocation} setGotLocation={setGotLocation} center={center} fetchData={fetchData} />
+            {showMap ? (<Map showMap={showMap} center={center} zoom={zoom} showMarker={showMarker} data={data} />) : <Loading />}
         </div>
     )
 }

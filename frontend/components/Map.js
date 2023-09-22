@@ -4,7 +4,6 @@ import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 
 export default function Map({ center, zoom, showMarker, data }) {
-    console.log(center, data)
     const icon1 = new L.Icon({
         iconUrl: '/marker1.png',
         iconSize: [32, 32],

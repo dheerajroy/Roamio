@@ -4,7 +4,7 @@ import { MdGpsFixed, MdGroups } from "react-icons/md"
 import { AiFillEdit } from "react-icons/ai"
 import { FaDonate, FaSearchLocation } from "react-icons/fa"
 
-export default function Form({ gotLocation, setGotLocation, center, fetchData }) {
+export default function Form({ setShowMap, gotLocation, setGotLocation, center, fetchData }) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [location, setLocation] = useState(null)
@@ -13,18 +13,24 @@ export default function Form({ gotLocation, setGotLocation, center, fetchData })
     const [submitted, setSubmitted] = useState(false)
 
     useEffect(() => {
-        setLocation(searchParams.get("location") || gotLocation ? center : "")
-        setAmenity(searchParams.get("amenity") || null)
+        setShowMap(false)
+        const locationValue = searchParams.get("location")
+        const amenityValue = searchParams.get("amenity")
+        const radiusValue = searchParams.get("radius")
+
+        setLocation(locationValue ? searchParams.get("location") : gotLocation ? center : "")
+        setAmenity(amenityValue || null)
         setRadius(searchParams.get("radius") || null)
 
-        const query = { location: location, amenity: amenity }
-        if (radius)
-            query.radius = radius
+        const query = { location: locationValue, amenity: amenityValue }
+        if (radiusValue)
+            query.radius = radiusValue
 
-        if (location && amenity) {
+        if (locationValue && amenityValue) {
             setSubmitted(false)
             fetchData(query)
         }
+        setShowMap(true)
     }, [gotLocation, submitted])
 
     function onSubmit(e) {

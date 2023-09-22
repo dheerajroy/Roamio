@@ -17,11 +17,7 @@ select {
 }
 
 button {
-    @apply !bg-black text-white font-semibold cursor-pointer;
-}
-
-button[type="disabled"]:disabled {
-    @apply bg-neutral-700;
+    @apply !bg-black text-white font-semibold cursor-pointer active:!bg-neutral-700 disabled:!bg-neutral-700;
 }
 
 .square-btn {

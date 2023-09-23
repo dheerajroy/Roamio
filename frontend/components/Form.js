@@ -12,7 +12,7 @@ export default function Form({ getLocation, yourLocation, fetchData }) {
     const [radius, setRadius] = useState("")
 
     useEffect(() => {
-        setLocation(searchParams.get("location") || "")
+        setLocation(searchParams.get("location") || yourLocation || "")
         setAmenity(searchParams.get("amenity") || "")
         setRadius(searchParams.get("radius") || "")
 
@@ -23,6 +23,10 @@ export default function Form({ getLocation, yourLocation, fetchData }) {
             fetchData(query)
         }
     }, [searchParams])
+
+    useEffect(() => {
+        setLocation(yourLocation || "")
+    }, [yourLocation])
 
     function onSubmit(e) {
         e.preventDefault()

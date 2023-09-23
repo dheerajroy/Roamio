@@ -54,7 +54,7 @@ export default function Form({ getLocation, yourLocation, fetchData }) {
                     placeholder="Area, city, country"
                     required
                 />
-                <button className="square-btn" onClick={() => { getLocation(); setLocation(yourLocation) }}><MdGpsFixed /></button>
+                <button type="button" className="square-btn" onClick={() => { getLocation(); setLocation(yourLocation) }}><MdGpsFixed /></button>
             </div>
             <select onChange={(e) => setAmenity(e.target.value)}
                 value={amenity} name="amenity" required>
@@ -79,10 +79,10 @@ export default function Form({ getLocation, yourLocation, fetchData }) {
             <input onClick={(e) => e.target.select()} onChange={(e) => setRadius(e.target.value)}
                 value={radius} type="number" name="radius" placeholder="Radius in meters" />
             <div className="flex gap-2">
-                <button className="w-full flex gap-2 justify-center items-center" type="submit"><FaSearchLocation />Explore</button>
-                <button className="square-btn" onClick={() => window.open("https://www.openstreetmap.org/edit", "_blank")}><AiFillEdit /></button>
-                <button className="square-btn" onClick={() => window.open("https://paypal.me/ddheerajroy", "_blank")}><FaDonate /></button>
-                <button className="square-btn" onClick={() => window.open("https://github.com/dheerajroy/Roamio", "_blank")}><MdGroups /></button>
+                <button type="button" className="w-full flex gap-2 justify-center items-center" type="submit"><FaSearchLocation />Explore</button>
+                <button type="button" className="square-btn" onClick={() => window.open("https://www.openstreetmap.org/edit", "_blank")}><AiFillEdit /></button>
+                <button type="button" className="square-btn" onClick={() => window.open("https://paypal.me/ddheerajroy", "_blank")}><FaDonate /></button>
+                <button type="button" className="square-btn" onClick={() => window.open("https://github.com/dheerajroy/Roamio", "_blank")}><MdGroups /></button>
             </div>
         </form>
     )

@@ -4,54 +4,60 @@ import { MdGpsFixed, MdGroups } from "react-icons/md"
 import { AiFillEdit } from "react-icons/ai"
 import { FaDonate, FaSearchLocation } from "react-icons/fa"
 
-export default function Form({ setShowMap, gotLocation, setGotLocation, center, fetchData }) {
+export default function Form({ getLocation, yourLocation, fetchData }) {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const [location, setLocation] = useState(null)
-    const [amenity, setAmenity] = useState(null)
-    const [radius, setRadius] = useState(null)
-    const [submitted, setSubmitted] = useState(false)
-    
+    const [location, setLocation] = useState("")
+    const [amenity, setAmenity] = useState("")
+    const [radius, setRadius] = useState("")
+
     useEffect(() => {
-        setShowMap(false)
-        setLocation(searchParams.get("location") || gotLocation ? center : "")
-        setAmenity(searchParams.get("amenity") || null)
-        setRadius(searchParams.get("radius") || null)
+        setLocation(searchParams.get("location") || "")
+        setAmenity(searchParams.get("amenity") || "")
+        setRadius(searchParams.get("radius") || "")
 
-        const query = { location: location, amenity: amenity }
-        if (radius)
-            query.radius = radius
-
-        if (location && amenity) {
-            setSubmitted(false)
+        if (searchParams.get("location")) {
+            const query = { location: searchParams.get("location"), amenity: searchParams.get("amenity") }
+            if (searchParams.get("radius"))
+                query.radius = searchParams.get("radius")
             fetchData(query)
         }
-        setShowMap(true)
-    }, [gotLocation, submitted])
+    }, [searchParams])
 
     function onSubmit(e) {
         e.preventDefault()
         const data = new FormData(e.target)
-        
         const locationValue = data.get("location")
         const amenityValue = data.get("amenity")
         const radiusValue = data.get("radius")
-        
+
         setLocation(locationValue)
         setAmenity(amenityValue)
         setRadius(radiusValue)
 
-        router.push(`?location=${locationValue}&amenity=${amenityValue}${radiusValue ? `&radius=${radiusValue}` : ''}`)
-        setSubmitted(true)
+        router.push(`?location=${locationValue}&amenity=${amenityValue}${radiusValue ? `&radius=${radiusValue}` : ""}`)
     }
 
     return (
-        <form onSubmit={onSubmit} className="fixed z-10 flex gap-2 m-3 flex-wrap [&>*]:w-full md:[&>*]:w-fit">
+        <form
+            onSubmit={onSubmit}
+            className="fixed z-10 flex gap-2 m-3 flex-wrap [&>*]:w-full md:[&>*]:w-fit"
+        >
             <div className="flex gap-2">
-                <input onClick={e => e.target.select()} defaultValue={location} className="w-full" type="text" name="location" placeholder="Area, city, country" required />
-                <button className="square-btn" onClick={() => setGotLocation(false)}><MdGpsFixed /></button>
+                <input
+                    onClick={(e) => e.target.select()}
+                    onChange={(e) => setLocation(e.target.value)}
+                    value={location}
+                    className="w-full"
+                    type="text"
+                    name="location"
+                    placeholder="Area, city, country"
+                    required
+                />
+                <button className="square-btn" onClick={() => { getLocation(); setLocation(yourLocation) }}><MdGpsFixed /></button>
             </div>
-            <select defaultValue={amenity} name="amenity" required>
+            <select onChange={(e) => setAmenity(e.target.value)}
+                value={amenity} name="amenity" required>
                 <option value="restaurant">Restaurant</option>
                 <option value="place_of_worship">Place  Of Worship</option>
                 <option value="cafe">Cafe</option>
@@ -70,7 +76,8 @@ export default function Form({ setShowMap, gotLocation, setGotLocation, center, 
                 <option value="movie_theater">Movie Theater</option>
                 <option value="shopping_mall">Shopping Mall</option>
             </select>
-            <input onClick={e => e.target.select()} defaultValue={radius} type="number" name="radius" placeholder="Radius in meters" />
+            <input onClick={(e) => e.target.select()} onChange={(e) => setRadius(e.target.value)}
+                value={radius} type="number" name="radius" placeholder="Radius in meters" />
             <div className="flex gap-2">
                 <button className="w-full flex gap-2 justify-center items-center" type="submit"><FaSearchLocation />Explore</button>
                 <button className="square-btn" onClick={() => window.open("https://www.openstreetmap.org/edit", "_blank")}><AiFillEdit /></button>

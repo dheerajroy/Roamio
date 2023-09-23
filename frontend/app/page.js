@@ -31,6 +31,7 @@ export default function Home() {
                 console.error('Error:', error)
             })
         setShowMap(true)
+        setShowMarker(true)
     }
 
     function getLocation() {

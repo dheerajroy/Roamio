@@ -52,6 +52,7 @@ export default function Home() {
     }
 
     useEffect(() => {
+        setGotLocation(false)
         getLocation()
         setTimeout(() => setShowMap(true), 5000)
         setGotLocation(false)

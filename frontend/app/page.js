@@ -33,7 +33,7 @@ export default function Home() {
                 console.error('Error:', error)
             })
             .finally(() => {
-                setLoading(false) // Set loading to false when data is fetched
+                setLoading(false)
                 setShowMap(true)
                 setShowMarker(true)
             })

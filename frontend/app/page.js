@@ -14,10 +14,12 @@ export default function Home() {
     const [data, setData] = useState()
     const [yourLocation, setYourLocation] = useState("")
     const [gotLocation, setGotLocation] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const Map = dynamic(() => import("../components/Map"), { ssr: false })
 
     function fetchData(query) {
+        setLoading(true)
         setShowMap(false)
         axios.get('https://roamio-api.onrender.com/nearby', {
             params: query,
@@ -30,8 +32,11 @@ export default function Home() {
             .catch((error) => {
                 console.error('Error:', error)
             })
-        setShowMap(true)
-        setShowMarker(true)
+            .finally(() => {
+                setLoading(false) // Set loading to false when data is fetched
+                setShowMap(true)
+                setShowMarker(true)
+            })
     }
 
     function getLocation() {
@@ -62,7 +67,7 @@ export default function Home() {
     return (
         <div>
             <Form getLocation={getLocation} yourLocation={yourLocation} fetchData={fetchData} />
-            {showMap ? (<Map center={center} zoom={zoom} showMarker={showMarker} data={data} />) : <Loading />}
+            {loading ? <Loading /> : (showMap ? <Map center={center} zoom={zoom} showMarker={showMarker} data={data} /> : <Loading />)}
         </div>
     )
 }

@@ -25,7 +25,7 @@ export default function Home() {
             .then((res) => {
                 setCenter([res.data.latitude, res.data.longitude])
                 setData(res.data.data)
-                setZoom(15)
+                setZoom(17)
             })
             .catch((error) => {
                 console.error('Error:', error)
@@ -41,7 +41,7 @@ export default function Home() {
                 setCenter(coords)
                 setYourLocation(coords)
                 setGotLocation(true)
-                setZoom(15)
+                setZoom(17)
                 setShowMarker(true)
                 setShowMap(true)
             })

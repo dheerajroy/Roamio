@@ -5,7 +5,6 @@ from .utils import get_nearby_amenities
 app = FastAPI(title='Roamio')
 
 origins = [
-    'http://localhost:3000',
     'roamio.istiva.world',
     'https://roamio.istiva.world',
     'http://roamio.istiva.world'

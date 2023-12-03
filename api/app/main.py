@@ -5,9 +5,9 @@ from .utils import get_nearby_amenities
 app = FastAPI(title='Roamio')
 
 origins = [
-    'roamio.istiva.world',
-    'https://roamio.istiva.world',
-    'http://roamio.istiva.world'
+    'roamiomap.vercel.app',
+    'https://roamiomap.vercel.app',
+    'http://roamiomap.vercel.app',
 ]
 
 app.add_middleware(

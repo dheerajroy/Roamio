@@ -8,5 +8,5 @@ Welcome to Roamio, your go-to tool for hassle-free neighborhood exploration. Roa
 - Open Street Map
 - Overpass API
 
-### Visit [roamio.istiva.world](https://roamio.istiva.world)
+### Visit [roamiomap.vercel.app](https://roamiomap.vercel.app)
 ### [Donate](https://paypal.me/ddheerajroy) if you liked it
